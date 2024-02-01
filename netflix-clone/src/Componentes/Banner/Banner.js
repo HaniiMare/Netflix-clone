@@ -1,57 +1,56 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
+import "./Banner.css";
+import axios from "../../Utils/axios";
+import requests from "../../Utils/requests";
 
-function Banner() {
+const Banner = () => {
+  const [movie, setMovie] = useState({});
+  useEffect(() => {
+    (async () => {
+      try {
+        const request = await axios.get(requests.fetchNetflixOriginals);
+        console.log(request);
+        setMovie(
+          request.data.results[
+            Math.floor(Math.random() * request.data.results.length)
+          ]
+        );
+      } catch (error) {
+        console.log(`error, ${error}`);
+      }
+    })();
+  }, []);
+
+  function truncate(str, n) {
+    return str?.length > n ? str.substr(0, n - 1) + "..." : str;
+  }
+
   return (
     <div
       className="banner"
       style={{
+        backgroundImage: `url('https://image.tmdb.org/t/p/original${movie?.backdrop_path}')`,
         backgroundSize: "cover",
-        backgroundImage:
-          "url (https://handoff-cdn.appadvice.com/wp-content/appadvice-v2-media/2016/11/Netflix-background_860c8ece6b34fb4f43af02255ca8f225.jpg) ",
-        backgroundPosition: "center center"
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
       }}
-    ></div>
+    >
+      <div className="banner_contents">
+        <h1 className="banner_title">
+          {movie?.title || movie?.name || movie?.original_name}
+        </h1>
+
+        <div className="banner_buttons">
+          <button className="banner_button play">Play</button>
+          <button className="banner_button">My List</button>
+        </div>
+
+        <h1 className="banner_description">{truncate(movie?.overview, 150)}</h1>
+      </div>
+
+      <div className="banner_fadeBottom" />
+    </div>
   );
-}
+};
 
-export default Banner
-
-
-
-
-
-
-
-
-// import React from 'react'
-
-// const Banner = () => {
-//   const[movie,setMovie] = useState({})
-//   return (
-//     <div className='banner'>
-//       style={{
-//         backgroundsSize: "cover",
-
-//         backgroundImage: 'url('https:api.themoviedb.org/3/genre/movie/list?language=en,
-      
-//         backgroundsPosition: "center",
-//         backgroundsRepeat:"no-repeat"
-        
-        
-//       }}
-//       <div className='banner_contentes'>
-//         <h1 className='banner_titil'>
-//           {movie?.titie || movie?.name || movie?.original_name}
-//           <div className='banner_botton'>
-//                <button className='banner_button play'>play</button>
-//               <button className='banner_button'>My List</button>
-//           </div>
-          
-//          </h1>
-//       </div>
-
-//     </div>
-//   )
-// }
-
-// export default Banner
+export default Banner;
