@@ -2,12 +2,13 @@
   padding: 8px 20px;
   display: flex;
   background-color: black;
-  /* opacity: 0.5; */
+  opacity: 0.8;
   z-index: -1;
   color: white;
-  /* justify-content: space-between; */
-  align-items: center;
   position: sticky;
+  /* justify-content: pace-between; */
+  align-items: center;
+  /* position:sticky; */
   /* margin-top: -1vh; */
 }
 .header_container {
